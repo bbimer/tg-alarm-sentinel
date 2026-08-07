@@ -17,6 +17,25 @@ A high-reliability automated alerting and VoIP call trigger system for Telegram.
 
 ---
 
+## 🏗 Architecture & Security Isolation
+
+```
+[ 🤖 Monitored Bot / Channel ]
+            │ (Pushes Signal)
+            ▼
+[ 📡 Watcher Account (VPS) ]
+  ├── 1. Checks Sleep State in Admin Bot
+  └── 2. Initiates MTProto Voice Call Request
+            │
+            ▼
+[ 📲 Primary User Account (Phone) ]
+  └── 🔔 Full-Screen Ringing Call Wakes User Up!
+```
+
+> **Security Note:** The VPS only hosts the session file of an isolated secondary "watcher" account with restricted permissions. Your primary Telegram account credentials and financial assets are **never stored on the VPS**.
+
+---
+
 ## 🛠 Project Structure
 
 ```
@@ -35,13 +54,13 @@ TG_ALARM/
 
 ---
 
-## 🚀 Quick Start & Installation
+## 🚀 Installation & Deployment
 
 ### 1. Environment Setup
 Copy `.env.example` to `.env` and fill in your credentials:
 
 ```env
-# Primary Watcher Account Credentials (MTProto)
+# Secondary Watcher Account Credentials (MTProto)
 TG_API_ID=12345678
 TG_API_HASH=your_api_hash
 TG_PHONE=+10000000000
@@ -61,13 +80,24 @@ Run the one-time authentication script locally to generate the `.session` file:
 python setup_auth.py
 ```
 
-### 3. Deploy to Linux VPS
-Deploy the application to your remote Linux server under PM2 process manager:
+### 3. Automated 1-Click VPS Deployment
+Deploy the entire stack to your remote Linux server (Ubuntu/Debian) under PM2 process manager:
 
 ```bash
 python deploy_remote.py
 ```
 *(Or double-click `ops/deploy.bat` on Windows)*
+
+---
+
+## 📊 VPS Process Management (PM2)
+
+Once deployed, the application runs 24/7 under **PM2**:
+
+- **Check status**: `pm2 status`
+- **View live logs**: `pm2 logs`
+- **Restart services**: `pm2 restart all`
+- **Save process state for auto-reboot**: `pm2 save`
 
 ---
 
