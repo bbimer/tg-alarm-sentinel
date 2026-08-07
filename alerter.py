@@ -61,7 +61,7 @@ def trigger_twilio_call():
     try:
         url = f"https://api.twilio.com/2010-04-01/Accounts/{config.TWILIO_ACCOUNT_SID}/Calls.json"
         data = {
-            "Url": "http://demo.twilio.com/docs/voice.xml", # Standard voice prompt
+            "Url": "http://demo.twilio.com/docs/voice.xml",
             "To": config.TWILIO_TO_NUMBER,
             "From": config.TWILIO_FROM_NUMBER
         }
@@ -82,21 +82,21 @@ async def handle_new_alert(client, bot_username: str, message_text: str):
     is_sleeping = state.get("is_sleeping", True)
     
     alert_time = time.strftime("%H:%M:%S")
-    snippet = message_text[:300] if message_text else "[Медиа / Без текста]"
+    snippet = message_text[:300] if message_text else "[Media / Empty Text]"
     
-    print(f"\n[🚨 ALERT TRIGGERED] Bot: {bot_username} | Mode Sleeping: {is_sleeping} | Time: {alert_time}")
+    print(f"\n[ALERT TRIGGERED] Target: {bot_username} | Sleep Mode: {is_sleeping} | Time: {alert_time}")
     
     # 1. Format admin notification text
     if is_sleeping:
-        msg_header = "🚨🚨 **КРИТИЧЕСКИЙ АЛЕРТ! РЕЖИМ СНА АКТИВЕН!** 🚨🚨"
+        msg_header = "🚨🚨 **CRITICAL ALERT! SLEEP MODE ACTIVE!** 🚨🚨"
     else:
-        msg_header = "ℹ️ **НОВОЕ СООБЩЕНИЕ ОТ БОТА (Режим бодрствования)**"
+        msg_header = "ℹ️ **NEW MESSAGE FROM TARGET (Awake Mode)**"
         
     full_msg = (
         f"{msg_header}\n\n"
-        f"🤖 **От отправителя:** `{bot_username}`\n"
-        f"⏰ **Время:** `{alert_time}`\n\n"
-        f"💬 **Текст сообщения:**\n"
+        f"🤖 **Sender:** `{bot_username}`\n"
+        f"⏰ **Time:** `{alert_time}`\n\n"
+        f"💬 **Message Content:**\n"
         f"```\n{snippet}\n```"
     )
     
@@ -133,5 +133,4 @@ async def handle_new_alert(client, bot_username: str, message_text: str):
             print("[!] Call skipped due to 45s cooldown protection.")
 
 if __name__ == "__main__":
-    # Test runner
-    asyncio.run(handle_new_alert("@test_bot", "Тестовое сообщение от бота для проверки альертов!"))
+    print("Alerter module loaded.")

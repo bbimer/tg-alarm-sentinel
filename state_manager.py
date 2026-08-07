@@ -9,7 +9,7 @@ DEFAULT_STATE: Dict[str, Any] = {
     "auto_wake_until": 0,         # Timestamp until which user is temporarily awake
     "last_trigger_time": "Never",
     "total_alerts_count": 0,
-    "targets": ["@furyadmin_bot"] # Dynamic list of monitored targets (usernames or user_ids)
+    "targets": ["@example_signal_bot"] # Generic placeholder for public portfolio
 }
 
 def load_state() -> Dict[str, Any]:
@@ -19,14 +19,12 @@ def load_state() -> Dict[str, Any]:
     try:
         with open(config.STATE_FILE_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
-            # Ensure targets array exists
             if "targets" not in data or not isinstance(data["targets"], list):
-                data["targets"] = ["@furyadmin_bot"]
-            # Check if auto_wake_until expired
+                data["targets"] = ["@example_signal_bot"]
             auto_wake = data.get("auto_wake_until", 0)
             if auto_wake > 0 and time.time() > auto_wake:
                 data["auto_wake_until"] = 0
-                data["is_sleeping"] = True # Automatically re-enable sleep mode!
+                data["is_sleeping"] = True # Automatically re-enable sleep mode
                 save_state(data)
             return data
     except Exception as e:
