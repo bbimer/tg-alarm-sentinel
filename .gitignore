@@ -1,0 +1,16 @@
+# Environment & Credentials
+.env
+*.session
+*.session-journal
+code_hash.json
+
+# State & Logs
+state.json
+*.log
+__pycache__/
+*.pyc
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
